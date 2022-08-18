@@ -67,15 +67,11 @@ mergedActivityCols <- gsub("Mag", "Magnitude", mergedActivityCols)
 mergedActivityCols <- gsub("^f", "frequencyDomain", mergedActivityCols)
 mergedActivityCols <- gsub("^t", "timeDomain", mergedActivityCols)
 
-# avoid typo
+# avoid typo and use new labels as column names
 mergedActivityCols <- gsub("BodyBody", "Body", mergedActivityCols)
-
-# use new labels as column names
 colnames(mergedActivity) <- mergedActivityCols
 
-
-
-# Step 5 - Create a second, independent tidy set with the average of each variable for each activity and each subject
+# 5. Create a second, independent tidy set with the average of each variable for each activity and each subject
 
 mergedActivityMeans <- mergedActivity %>% 
   group_by(subject, activity) %>%
