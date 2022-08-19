@@ -1,26 +1,22 @@
 library(dplyr)
 
-
+# preparing data:
 # Download and unzip data
+
 fileURL <- "https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip"
 fileName <- "UCI HAR Dataset.zip"
 if (!file.exists(fileName)) {download.file(fileURL, fileName, mode = "wb")}
-
 dataPath <- "UCI HAR Dataset"
 if (!file.exists(dataPath)) {unzip(fileName)}
 
+# load train and test data, features and activity labels into R
 
-
-# load train and test data into R
 trainingSubject <- read.table(file.path(dataPath, "train", "subject_train.txt"))
 trainingValue <- read.table(file.path(dataPath, "train", "X_train.txt"))
 trainingActivity <- read.table(file.path(dataPath, "train", "y_train.txt"))
-
 testSubject <- read.table(file.path(dataPath, "test", "subject_test.txt"))
 testValue <- read.table(file.path(dataPath, "test", "X_test.txt"))
 testActivity <- read.table(file.path(dataPath, "test", "y_test.txt"))
-
-# load features and activity into R
 features <- read.table(file.path(dataPath, "features.txt"), as.is = TRUE)
 activities <- read.table(file.path(dataPath, "activity_labels.txt"))
 colnames(activities) <- c("activityId", "activityLabel")
@@ -41,14 +37,10 @@ colnames(mergedActivity) <- c("subject", features[, 2], "activity")
 columnsNeed <- grepl("subject|activity|mean|std", colnames(mergedActivity))
 mergedActivity <- mergedActivity[, columnsNeed]
 
-
-
-# 3. Use descriptive activity names to name the activities in the dataset
+# 3. Use descriptive activity names to name the activities in the data
 
 mergedActivity$activity <- factor(mergedActivity$activity, 
                                   levels = activities[, 1], labels = activities[, 2])
-
-
 
 # 4. Appropriately label the data set with descriptive variable names
 mergedActivityCols <- colnames(mergedActivity)
